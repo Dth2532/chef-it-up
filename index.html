@@ -253,6 +253,124 @@
       font-size: 0.9rem;
     }
 
+    .auth-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 28px;
+    }
+
+    .auth-tab {
+      flex: 1;
+      padding: 14px;
+      border-radius: var(--radius-md);
+      background: var(--bg-elevated);
+      border: none;
+      color: var(--text-secondary);
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 1rem;
+    }
+
+    .auth-tab.active {
+      background: var(--gradient-warm);
+      color: white;
+    }
+
+    .auth-divider {
+      display: flex;
+      align-items: center;
+      margin: 24px 0;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    .auth-divider::before,
+    .auth-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .auth-divider span {
+      padding: 0 16px;
+    }
+
+    .magic-link-btn {
+      background: var(--bg-elevated) !important;
+      border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    }
+
+    .magic-link-btn:hover {
+      background: var(--bg-card) !important;
+      border-color: var(--accent-primary) !important;
+    }
+
+    .magic-link-hint {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      margin-top: 12px;
+    }
+
+    .magic-link-confirmation {
+      text-align: center;
+    }
+
+    .magic-link-icon {
+      font-size: 64px;
+      margin-bottom: 20px;
+    }
+
+    .magic-link-confirmation h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      margin-bottom: 12px;
+    }
+
+    .magic-link-confirmation p {
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+    }
+
+    .magic-link-email {
+      font-weight: 600;
+      color: var(--accent-primary) !important;
+      font-size: 1.1rem;
+      margin-bottom: 20px !important;
+    }
+
+    .magic-link-warning {
+      background: rgba(243, 156, 18, 0.15);
+      border: 1px solid rgba(243, 156, 18, 0.3);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      margin: 20px 0;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      text-align: left;
+    }
+
+    .magic-link-warning span {
+      font-size: 20px;
+    }
+
+    .magic-link-warning p {
+      font-size: 0.9rem;
+      margin: 0 !important;
+      color: var(--text-primary) !important;
+    }
+
+    .auth-btn.secondary {
+      background: var(--bg-elevated);
+    }
+
+    .auth-btn.secondary:hover {
+      background: var(--bg-card);
+    }
+
     /* App Container */
     .app-container {
       max-width: 1400px;
@@ -620,6 +738,12 @@
       color: var(--accent-primary);
     }
 
+    .meal-type-chips .filter-chip.meal-type.active {
+      background: var(--gradient-warm);
+      color: white;
+      border-color: transparent;
+    }
+
     /* Generate Button */
     .generate-btn {
       width: 100%;
@@ -725,6 +849,16 @@
       color: var(--accent-secondary);
       text-transform: uppercase;
       letter-spacing: 0.5px;
+    }
+
+    .recipe-tag.match-perfect {
+      background: rgba(46, 204, 113, 0.2);
+      color: #2ecc71;
+    }
+
+    .recipe-tag.match-partial {
+      background: rgba(241, 196, 15, 0.2);
+      color: #f1c40f;
     }
 
     .recipe-title {
@@ -1636,59 +1770,121 @@
         <div class="auth-logo-text">MealCraft</div>
       </div>
 
+      <div class="auth-tabs">
+        <button class="auth-tab active" data-tab="login">Sign In</button>
+        <button class="auth-tab" data-tab="register">Create Account</button>
+      </div>
+
       <div class="auth-error" id="authError"></div>
       <div class="auth-success" id="authSuccess"></div>
 
-      <!-- Email Entry Form -->
-      <form class="auth-form active" id="emailForm">
-        <h3 style="text-align: center; margin-bottom: 8px; font-family: 'Playfair Display', serif;">Welcome!</h3>
-        <p style="text-align: center; color: var(--text-secondary); margin-bottom: 24px;">Enter your email to sign in or create an account</p>
-        
+      <!-- Login Form -->
+      <form class="auth-form active" id="loginForm">
         <div class="form-group">
-          <label class="form-label">Email Address</label>
-          <input type="email" class="form-input" id="authEmail" placeholder="you@example.com" required>
+          <label class="form-label">Email</label>
+          <input type="email" class="form-input" id="loginEmail" placeholder="you@example.com" required>
         </div>
         
-        <button type="submit" class="auth-btn">
-          <span id="emailBtnText">✉️ Send Magic Link</span>
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <input type="password" class="form-input" id="loginPassword" placeholder="••••••••">
+        </div>
+        
+        <button type="submit" class="auth-btn" id="loginBtn">
+          <span>Sign In with Password</span>
+        </button>
+
+        <div class="auth-divider">
+          <span>or</span>
+        </div>
+
+        <button type="button" class="auth-btn magic-link-btn" id="magicLinkBtn">
+          <span>✉️ Send Magic Link Instead</span>
         </button>
         
-        <p style="text-align: center; color: var(--text-muted); margin-top: 20px; font-size: 0.85rem;">
-          We'll send you a link to sign in instantly — no password needed!
-        </p>
+        <p class="magic-link-hint">No password? We'll email you a sign-in link.</p>
+
+        <div class="forgot-password">
+          <a href="#" id="forgotPasswordLink">Forgot your password?</a>
+        </div>
       </form>
 
-      <!-- Email Sent Confirmation -->
-      <div class="auth-form" id="emailSentForm">
-        <div style="text-align: center;">
-          <div style="font-size: 64px; margin-bottom: 20px;">📬</div>
-          <h3 style="font-family: 'Playfair Display', serif; margin-bottom: 8px;">Check Your Email</h3>
-          <p style="color: var(--text-secondary); margin-bottom: 24px;">
-            We sent a magic link to<br>
-            <strong id="sentToEmail">your email</strong>
-          </p>
-          <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 24px;">
-            Click the link in the email to sign in. The link expires in 1 hour.
-          </p>
-          <button type="button" class="auth-btn" style="background: var(--bg-elevated);" id="useDifferentEmailBtn">
-            ← Use Different Email
+      <!-- Magic Link Sent -->
+      <div class="auth-form" id="magicLinkSentForm">
+        <div class="magic-link-confirmation">
+          <div class="magic-link-icon">📬</div>
+          <h3>Check your email!</h3>
+          <p>We sent a magic link to:</p>
+          <p class="magic-link-email" id="sentToEmail">email@example.com</p>
+          <div class="magic-link-warning">
+            <span>⚠️</span>
+            <p><strong>Important:</strong> Open the link on THIS device to stay logged in here.</p>
+          </div>
+          <button type="button" class="auth-btn secondary" id="backToLoginBtn">
+            ← Back to Sign In
           </button>
         </div>
       </div>
 
-      <!-- Complete Sign In (for new users) -->
-      <form class="auth-form" id="completeSignInForm">
-        <h3 style="text-align: center; margin-bottom: 8px; font-family: 'Playfair Display', serif;">Almost There!</h3>
-        <p style="text-align: center; color: var(--text-secondary); margin-bottom: 24px;">Enter your name to complete setup</p>
-        
+      <!-- Email Verification (cross-device magic link) -->
+      <div class="auth-form" id="verifyEmailForm">
+        <div class="magic-link-confirmation">
+          <div class="magic-link-icon">🔐</div>
+          <h3>Confirm your email</h3>
+          <p>It looks like you opened this link on a different device. Please enter your email to confirm:</p>
+          <div class="form-group" style="margin-top: 20px;">
+            <input type="email" class="form-input" id="verifyEmail" placeholder="you@example.com" required>
+          </div>
+          <button type="button" class="auth-btn" id="verifyEmailBtn">
+            <span>Confirm & Sign In</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Register Form -->
+      <form class="auth-form" id="registerForm">
         <div class="form-group">
-          <label class="form-label">Your Name</label>
-          <input type="text" class="form-input" id="newUserName" placeholder="John Doe" required>
+          <label class="form-label">Full Name</label>
+          <input type="text" class="form-input" id="registerName" placeholder="John Doe" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input type="email" class="form-input" id="registerEmail" placeholder="you@example.com" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <input type="password" class="form-input" id="registerPassword" placeholder="At least 6 characters" minlength="6">
         </div>
         
-        <button type="submit" class="auth-btn">
-          <span id="completeBtnText">🚀 Complete Sign Up</span>
+        <button type="submit" class="auth-btn" id="registerBtn">
+          <span>Create Account</span>
         </button>
+
+        <div class="auth-divider">
+          <span>or</span>
+        </div>
+
+        <button type="button" class="auth-btn magic-link-btn" id="magicLinkRegisterBtn">
+          <span>✉️ Sign Up with Magic Link</span>
+        </button>
+        
+        <p class="magic-link-hint">Skip the password — we'll email you a sign-in link.</p>
+      </form>
+
+      <!-- Complete Profile (for new magic link users) -->
+      <form class="auth-form" id="completeProfileForm">
+        <div class="magic-link-confirmation">
+          <div class="magic-link-icon">👋</div>
+          <h3>Welcome to MealCraft!</h3>
+          <p>Let's set up your profile:</p>
+          <div class="form-group" style="margin-top: 20px;">
+            <label class="form-label">Your Name</label>
+            <input type="text" class="form-input" id="newUserName" placeholder="John Doe" required>
+          </div>
+          <button type="submit" class="auth-btn">
+            <span>🚀 Get Started</span>
+          </button>
+        </div>
       </form>
     </div>
   </div>
@@ -1750,6 +1946,17 @@
           <button class="add-btn" id="addIngredientBtn">+ Add</button>
         </div>
         <div class="ingredient-tags" id="ingredientTags"></div>
+      </div>
+
+      <div class="filters-container">
+        <div class="filters-title">What meal are you planning?</div>
+        <div class="filter-chips meal-type-chips" id="mealTypeFilters">
+          <button class="filter-chip meal-type active" data-meal="any">🍽️ Any Meal</button>
+          <button class="filter-chip meal-type" data-meal="breakfast">🌅 Breakfast</button>
+          <button class="filter-chip meal-type" data-meal="lunch">☀️ Lunch</button>
+          <button class="filter-chip meal-type" data-meal="dinner">🌙 Dinner</button>
+          <button class="filter-chip meal-type" data-meal="snack">🍿 Snack</button>
+        </div>
       </div>
 
       <div class="filters-container">
@@ -2030,25 +2237,18 @@
     // =====================
     // IMPORTANT: Replace with your own Firebase config
     const firebaseConfig = {
-       apiKey: "AIzaSyD02SvREr3-BH-i4c0qjkharjb3H7NOzvM",
-    authDomain: "chef-it-up-da3be.firebaseapp.com",
-    projectId: "chef-it-up-da3be",
-    storageBucket: "chef-it-up-da3be.firebasestorage.app",
-    messagingSenderId: "220383965849",
-    appId: "1:220383965849:web:e872e1f9acfec350653e08",
-    measurementId: "G-5TF8HEDT6S"
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_PROJECT.firebaseapp.com",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_PROJECT.appspot.com",
+      messagingSenderId: "YOUR_SENDER_ID",
+      appId: "YOUR_APP_ID"
     };
 
     // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
     const db = firebase.firestore();
-
-    // Action code settings for email link
-    const actionCodeSettings = {
-      url: window.location.origin + window.location.pathname,
-      handleCodeInApp: true,
-    };
 
     // =====================
     // State Management
@@ -2057,6 +2257,7 @@
       user: null,
       ingredients: [],
       dietaryFilters: [],
+      selectedMealType: 'any',
       favorites: [],
       mealPlan: {},
       userRecipes: [],
@@ -2084,7 +2285,7 @@
         description: "Juicy grilled chicken marinated in herbs, lemon, and olive oil.",
         ingredients: ["4 chicken breasts", "3 tbsp olive oil", "2 lemons, juiced", "4 garlic cloves, minced", "2 tsp oregano", "1 tsp thyme", "Salt and pepper"],
         instructions: ["Mix olive oil, lemon juice, garlic, and herbs in a bowl.", "Marinate chicken for at least 30 minutes.", "Preheat grill to medium-high heat.", "Grill chicken 6-7 minutes per side until cooked through.", "Let rest 5 minutes before serving."],
-        matchIngredients: ["chicken", "lemon", "garlic", "olive oil", "herbs"]
+        matchIngredients: ["chicken", "lemon", "garlic", "olive oil", "herbs", "oregano", "thyme"]
       },
       {
         id: 'default-2',
@@ -2098,7 +2299,7 @@
         description: "Colorful vegetables and crispy tofu in a savory sauce.",
         ingredients: ["1 block firm tofu", "2 cups broccoli florets", "1 red bell pepper", "1 cup snap peas", "3 tbsp soy sauce", "1 tbsp sesame oil", "2 garlic cloves", "1 inch ginger"],
         instructions: ["Press tofu and cut into cubes.", "Heat sesame oil in a wok over high heat.", "Fry tofu until golden, set aside.", "Stir-fry vegetables with garlic and ginger.", "Add sauce and tofu, toss to combine."],
-        matchIngredients: ["tofu", "broccoli", "bell pepper", "soy sauce", "garlic"]
+        matchIngredients: ["tofu", "broccoli", "bell pepper", "pepper", "peas", "soy sauce", "garlic", "ginger", "sesame"]
       },
       {
         id: 'default-3',
@@ -2112,7 +2313,7 @@
         description: "Creamy Roman pasta with eggs, cheese, and pancetta.",
         ingredients: ["400g spaghetti", "200g pancetta", "4 egg yolks", "100g parmesan", "2 whole eggs", "Black pepper", "Salt"],
         instructions: ["Cook pasta in salted water until al dente.", "Fry pancetta until crispy.", "Whisk eggs, yolks, and cheese together.", "Toss hot pasta with pancetta off heat.", "Add egg mixture quickly, tossing constantly.", "Season with pepper and serve immediately."],
-        matchIngredients: ["pasta", "eggs", "bacon", "parmesan", "cheese"]
+        matchIngredients: ["pasta", "spaghetti", "eggs", "egg", "bacon", "pancetta", "parmesan", "cheese"]
       },
       {
         id: 'default-4',
@@ -2126,7 +2327,7 @@
         description: "Elevated avocado toast with poached eggs and everything seasoning.",
         ingredients: ["2 slices sourdough", "1 ripe avocado", "2 eggs", "Everything bagel seasoning", "Red pepper flakes", "Lemon juice", "Salt"],
         instructions: ["Toast bread until golden.", "Mash avocado with lemon juice and salt.", "Poach eggs in simmering water.", "Spread avocado on toast.", "Top with poached egg and seasonings."],
-        matchIngredients: ["avocado", "bread", "eggs", "lemon"]
+        matchIngredients: ["avocado", "bread", "toast", "eggs", "egg", "lemon"]
       },
       {
         id: 'default-5',
@@ -2140,7 +2341,7 @@
         description: "Nourishing grain bowl with roasted vegetables and tahini dressing.",
         ingredients: ["1 cup quinoa", "1 sweet potato", "1 cup chickpeas", "2 cups kale", "1 avocado", "Tahini", "Lemon", "Garlic"],
         instructions: ["Cook quinoa according to package.", "Roast sweet potato and chickpeas at 400°F.", "Massage kale with olive oil.", "Make tahini dressing with lemon and garlic.", "Arrange all components in bowls.", "Drizzle with dressing."],
-        matchIngredients: ["quinoa", "sweet potato", "chickpeas", "kale", "avocado"]
+        matchIngredients: ["quinoa", "sweet potato", "potato", "chickpeas", "kale", "avocado", "tahini", "lemon", "garlic"]
       },
       {
         id: 'default-6',
@@ -2154,7 +2355,7 @@
         description: "Fluffy pancakes made with oats and ripe bananas.",
         ingredients: ["2 ripe bananas", "1 cup oats", "2 eggs", "1/2 tsp cinnamon", "1 tsp vanilla", "Maple syrup", "Butter for cooking"],
         instructions: ["Blend oats, bananas, eggs, cinnamon, and vanilla.", "Heat butter in a pan over medium heat.", "Pour small circles of batter.", "Cook until bubbles form, then flip.", "Serve with maple syrup and fresh fruit."],
-        matchIngredients: ["banana", "oats", "eggs", "cinnamon"]
+        matchIngredients: ["banana", "bananas", "oats", "oatmeal", "eggs", "egg", "cinnamon", "vanilla", "maple syrup", "butter"]
       },
       {
         id: 'default-7',
@@ -2168,7 +2369,7 @@
         description: "Fresh and crisp traditional Greek salad with feta.",
         ingredients: ["4 tomatoes", "1 cucumber", "1 red onion", "200g feta cheese", "Kalamata olives", "Olive oil", "Oregano", "Red wine vinegar"],
         instructions: ["Cut tomatoes and cucumber into chunks.", "Slice onion thinly.", "Combine vegetables in a bowl.", "Add olives and crumbled feta.", "Dress with olive oil, vinegar, and oregano."],
-        matchIngredients: ["tomatoes", "cucumber", "onion", "feta", "olives"]
+        matchIngredients: ["tomatoes", "tomato", "cucumber", "onion", "feta", "cheese", "olives", "olive oil", "oregano"]
       },
       {
         id: 'default-8',
@@ -2182,7 +2383,287 @@
         description: "Classic comfort food with fluffy eggs and day-old rice.",
         ingredients: ["3 cups cooked rice (cold)", "3 eggs", "1 cup frozen peas", "3 green onions", "3 tbsp soy sauce", "1 tbsp sesame oil", "2 garlic cloves"],
         instructions: ["Beat eggs and scramble in hot wok, set aside.", "Stir-fry garlic and peas.", "Add cold rice and break up clumps.", "Add soy sauce and toss well.", "Mix in eggs and green onions.", "Finish with sesame oil."],
-        matchIngredients: ["rice", "eggs", "peas", "soy sauce", "garlic"]
+        matchIngredients: ["rice", "eggs", "egg", "peas", "green onions", "onion", "soy sauce", "garlic", "sesame"]
+      },
+      {
+        id: 'default-9',
+        name: "Chicken Caesar Salad",
+        emoji: "🥗",
+        category: "lunch",
+        tags: ["high-protein", "low-carb"],
+        time: 25,
+        servings: 2,
+        difficulty: "Easy",
+        description: "Classic Caesar salad with grilled chicken and homemade dressing.",
+        ingredients: ["2 chicken breasts", "1 romaine lettuce", "1/2 cup parmesan", "Croutons", "Caesar dressing", "Lemon juice", "Garlic"],
+        instructions: ["Season and grill chicken until cooked through.", "Chop romaine lettuce.", "Slice chicken into strips.", "Toss lettuce with dressing.", "Top with chicken, parmesan, and croutons."],
+        matchIngredients: ["chicken", "lettuce", "romaine", "parmesan", "cheese", "lemon", "garlic", "bread"]
+      },
+      {
+        id: 'default-10',
+        name: "Tomato Basil Soup",
+        emoji: "🍅",
+        category: "lunch",
+        tags: ["vegetarian", "vegan", "gluten-free"],
+        time: 35,
+        servings: 4,
+        difficulty: "Easy",
+        description: "Creamy roasted tomato soup with fresh basil.",
+        ingredients: ["2 lbs tomatoes", "1 onion", "4 garlic cloves", "Fresh basil", "2 cups vegetable broth", "Olive oil", "Salt and pepper"],
+        instructions: ["Roast tomatoes, onion, and garlic at 400°F for 25 min.", "Transfer to pot with broth.", "Blend until smooth.", "Stir in fresh basil.", "Season and serve with crusty bread."],
+        matchIngredients: ["tomatoes", "tomato", "onion", "garlic", "basil", "broth", "olive oil"]
+      },
+      {
+        id: 'default-11',
+        name: "Shrimp Tacos",
+        emoji: "🌮",
+        category: "dinner",
+        tags: ["high-protein", "dairy-free"],
+        time: 20,
+        servings: 4,
+        difficulty: "Easy",
+        description: "Spicy shrimp tacos with fresh slaw and lime crema.",
+        ingredients: ["1 lb shrimp", "8 corn tortillas", "2 cups cabbage", "1 lime", "Sour cream", "Chili powder", "Cumin", "Cilantro"],
+        instructions: ["Season shrimp with chili and cumin.", "Sauté shrimp until pink, about 3 min per side.", "Shred cabbage and mix with lime juice.", "Warm tortillas.", "Assemble tacos with shrimp and slaw.", "Top with lime crema and cilantro."],
+        matchIngredients: ["shrimp", "tortillas", "cabbage", "lime", "sour cream", "cilantro", "chili"]
+      },
+      {
+        id: 'default-12',
+        name: "Mushroom Risotto",
+        emoji: "🍄",
+        category: "dinner",
+        tags: ["vegetarian", "gluten-free"],
+        time: 45,
+        servings: 4,
+        difficulty: "Medium",
+        description: "Creamy arborio rice with sautéed mushrooms and parmesan.",
+        ingredients: ["1.5 cups arborio rice", "8 oz mushrooms", "4 cups vegetable broth", "1/2 cup white wine", "1/2 cup parmesan", "1 onion", "3 tbsp butter", "Garlic"],
+        instructions: ["Sauté mushrooms until golden, set aside.", "Cook onion and garlic in butter.", "Add rice and toast for 2 minutes.", "Add wine and stir until absorbed.", "Add broth one ladle at a time, stirring constantly.", "Fold in mushrooms, butter, and parmesan."],
+        matchIngredients: ["rice", "mushrooms", "mushroom", "broth", "wine", "parmesan", "cheese", "onion", "butter", "garlic"]
+      },
+      {
+        id: 'default-13',
+        name: "Honey Garlic Salmon",
+        emoji: "🐟",
+        category: "dinner",
+        tags: ["high-protein", "gluten-free", "dairy-free"],
+        time: 25,
+        servings: 4,
+        difficulty: "Easy",
+        description: "Pan-seared salmon with a sweet and savory honey garlic glaze.",
+        ingredients: ["4 salmon fillets", "4 tbsp honey", "3 tbsp soy sauce", "4 garlic cloves", "1 tbsp olive oil", "Lemon juice", "Green onions"],
+        instructions: ["Mix honey, soy sauce, garlic, and lemon juice.", "Season salmon with salt and pepper.", "Sear salmon skin-side up for 4 minutes.", "Flip and add glaze to pan.", "Cook 3-4 more minutes, basting with sauce.", "Garnish with green onions."],
+        matchIngredients: ["salmon", "fish", "honey", "soy sauce", "garlic", "olive oil", "lemon", "green onions"]
+      },
+      {
+        id: 'default-14',
+        name: "Spinach & Feta Omelette",
+        emoji: "🥚",
+        category: "breakfast",
+        tags: ["vegetarian", "gluten-free", "low-carb", "keto", "high-protein"],
+        time: 10,
+        servings: 1,
+        difficulty: "Easy",
+        description: "Fluffy omelette stuffed with spinach and crumbled feta cheese.",
+        ingredients: ["3 eggs", "1 cup spinach", "1/4 cup feta cheese", "1 tbsp butter", "Salt and pepper", "Fresh herbs"],
+        instructions: ["Beat eggs with salt and pepper.", "Melt butter in non-stick pan over medium heat.", "Pour eggs and let set slightly.", "Add spinach and feta to one half.", "Fold omelette and cook 1 more minute.", "Serve with fresh herbs."],
+        matchIngredients: ["eggs", "egg", "spinach", "feta", "cheese", "butter", "herbs"]
+      },
+      {
+        id: 'default-15',
+        name: "Chicken & Vegetable Soup",
+        emoji: "🍲",
+        category: "dinner",
+        tags: ["high-protein", "gluten-free", "dairy-free"],
+        time: 40,
+        servings: 6,
+        difficulty: "Easy",
+        description: "Hearty homemade soup with tender chicken and fresh vegetables.",
+        ingredients: ["2 chicken breasts", "4 carrots", "4 celery stalks", "1 onion", "8 cups chicken broth", "2 garlic cloves", "Fresh thyme", "Bay leaves"],
+        instructions: ["Sauté onion, carrots, and celery until softened.", "Add garlic and cook 1 minute.", "Pour in broth and add chicken, thyme, bay leaves.", "Simmer 25 minutes until chicken is cooked.", "Remove chicken, shred, and return to pot.", "Season and serve hot."],
+        matchIngredients: ["chicken", "carrots", "carrot", "celery", "onion", "broth", "garlic", "thyme", "herbs"]
+      },
+      {
+        id: 'default-16',
+        name: "Beef & Broccoli",
+        emoji: "🥩",
+        category: "dinner",
+        tags: ["high-protein", "dairy-free"],
+        time: 25,
+        servings: 4,
+        difficulty: "Easy",
+        description: "Classic takeout-style beef and broccoli in savory sauce.",
+        ingredients: ["1 lb flank steak", "4 cups broccoli", "3 tbsp soy sauce", "2 tbsp oyster sauce", "1 tbsp sesame oil", "3 garlic cloves", "1 inch ginger", "Cornstarch"],
+        instructions: ["Slice beef thin and marinate in soy sauce and cornstarch.", "Blanch broccoli until bright green.", "Stir-fry beef over high heat until browned.", "Add garlic and ginger.", "Add broccoli and sauces.", "Toss and serve over rice."],
+        matchIngredients: ["beef", "steak", "broccoli", "soy sauce", "garlic", "ginger", "sesame"]
+      },
+      {
+        id: 'default-17',
+        name: "Caprese Sandwich",
+        emoji: "🥪",
+        category: "lunch",
+        tags: ["vegetarian"],
+        time: 10,
+        servings: 2,
+        difficulty: "Easy",
+        description: "Fresh mozzarella, tomatoes, and basil on crusty bread.",
+        ingredients: ["1 baguette", "8 oz fresh mozzarella", "2 tomatoes", "Fresh basil", "Balsamic glaze", "Olive oil", "Salt and pepper"],
+        instructions: ["Slice baguette in half lengthwise.", "Drizzle with olive oil.", "Layer mozzarella and tomato slices.", "Add fresh basil leaves.", "Drizzle with balsamic glaze.", "Season and serve."],
+        matchIngredients: ["bread", "baguette", "mozzarella", "cheese", "tomatoes", "tomato", "basil", "olive oil"]
+      },
+      {
+        id: 'default-18',
+        name: "Berry Smoothie Bowl",
+        emoji: "🫐",
+        category: "breakfast",
+        tags: ["vegetarian", "gluten-free", "vegan"],
+        time: 10,
+        servings: 1,
+        difficulty: "Easy",
+        description: "Thick blended berry smoothie topped with granola and fresh fruit.",
+        ingredients: ["1 cup mixed berries", "1 frozen banana", "1/2 cup almond milk", "Granola", "Chia seeds", "Fresh berries", "Honey"],
+        instructions: ["Blend frozen berries, banana, and almond milk until thick.", "Pour into bowl.", "Top with granola, chia seeds, and fresh berries.", "Drizzle with honey.", "Serve immediately."],
+        matchIngredients: ["berries", "blueberries", "strawberries", "banana", "milk", "almond milk", "granola", "chia", "honey"]
+      },
+      {
+        id: 'default-19',
+        name: "Garlic Butter Shrimp Pasta",
+        emoji: "🍤",
+        category: "dinner",
+        tags: ["high-protein"],
+        time: 25,
+        servings: 4,
+        difficulty: "Easy",
+        description: "Succulent shrimp in garlic butter sauce over linguine.",
+        ingredients: ["1 lb shrimp", "12 oz linguine", "6 tbsp butter", "6 garlic cloves", "1/2 cup white wine", "Lemon juice", "Parsley", "Red pepper flakes"],
+        instructions: ["Cook pasta according to package.", "Sauté garlic in butter until fragrant.", "Add shrimp and cook until pink.", "Deglaze with wine and lemon juice.", "Toss pasta with shrimp and sauce.", "Garnish with parsley and pepper flakes."],
+        matchIngredients: ["shrimp", "pasta", "linguine", "butter", "garlic", "wine", "lemon", "parsley"]
+      },
+      {
+        id: 'default-20',
+        name: "Black Bean Tacos",
+        emoji: "🌮",
+        category: "dinner",
+        tags: ["vegetarian", "vegan", "gluten-free"],
+        time: 20,
+        servings: 4,
+        difficulty: "Easy",
+        description: "Seasoned black beans with fresh toppings in corn tortillas.",
+        ingredients: ["2 cans black beans", "8 corn tortillas", "1 avocado", "1 cup salsa", "Lime", "Cilantro", "Cumin", "Red onion"],
+        instructions: ["Heat beans with cumin and a splash of water.", "Mash slightly for texture.", "Warm tortillas.", "Fill with beans and top with avocado.", "Add salsa, onion, and cilantro.", "Squeeze lime over top."],
+        matchIngredients: ["black beans", "beans", "tortillas", "avocado", "salsa", "lime", "cilantro", "onion", "cumin"]
+      },
+      {
+        id: 'default-21',
+        name: "French Toast",
+        emoji: "🍞",
+        category: "breakfast",
+        tags: ["vegetarian"],
+        time: 20,
+        servings: 4,
+        difficulty: "Easy",
+        description: "Classic French toast with cinnamon and maple syrup.",
+        ingredients: ["8 slices bread", "4 eggs", "1 cup milk", "2 tsp cinnamon", "1 tsp vanilla", "Butter", "Maple syrup", "Powdered sugar"],
+        instructions: ["Whisk eggs, milk, cinnamon, and vanilla.", "Dip bread slices in mixture.", "Cook in buttered pan until golden on each side.", "Serve with maple syrup and powdered sugar."],
+        matchIngredients: ["bread", "eggs", "egg", "milk", "cinnamon", "vanilla", "butter", "maple syrup"]
+      },
+      {
+        id: 'default-22',
+        name: "Chicken Quesadilla",
+        emoji: "🧀",
+        category: "lunch",
+        tags: ["high-protein"],
+        time: 20,
+        servings: 2,
+        difficulty: "Easy",
+        description: "Crispy tortilla filled with seasoned chicken and melted cheese.",
+        ingredients: ["2 flour tortillas", "1 cup cooked chicken", "1 cup shredded cheese", "1/2 bell pepper", "Sour cream", "Salsa", "Cumin", "Chili powder"],
+        instructions: ["Season chicken with cumin and chili powder.", "Place tortilla in pan, add cheese and chicken.", "Add sliced peppers.", "Top with more cheese and second tortilla.", "Cook until golden, flip and repeat.", "Slice and serve with sour cream and salsa."],
+        matchIngredients: ["tortillas", "chicken", "cheese", "bell pepper", "pepper", "sour cream", "salsa", "cumin"]
+      },
+      {
+        id: 'default-23',
+        name: "Lemon Herb Roasted Potatoes",
+        emoji: "🥔",
+        category: "dinner",
+        tags: ["vegetarian", "vegan", "gluten-free"],
+        time: 45,
+        servings: 4,
+        difficulty: "Easy",
+        description: "Crispy roasted potatoes with lemon, garlic, and fresh herbs.",
+        ingredients: ["2 lbs potatoes", "4 tbsp olive oil", "4 garlic cloves", "2 lemons", "Fresh rosemary", "Fresh thyme", "Salt and pepper"],
+        instructions: ["Cut potatoes into chunks.", "Toss with oil, garlic, lemon juice, and herbs.", "Spread on baking sheet.", "Roast at 425°F for 40 minutes until crispy.", "Squeeze fresh lemon over top before serving."],
+        matchIngredients: ["potatoes", "potato", "olive oil", "garlic", "lemon", "rosemary", "thyme", "herbs"]
+      },
+      {
+        id: 'default-24',
+        name: "Peanut Butter Banana Toast",
+        emoji: "🥜",
+        category: "breakfast",
+        tags: ["vegetarian", "vegan", "dairy-free"],
+        time: 5,
+        servings: 1,
+        difficulty: "Easy",
+        description: "Simple and satisfying toast with peanut butter and sliced banana.",
+        ingredients: ["2 slices bread", "2 tbsp peanut butter", "1 banana", "Honey", "Chia seeds", "Cinnamon"],
+        instructions: ["Toast bread until golden.", "Spread peanut butter evenly.", "Top with sliced banana.", "Drizzle with honey.", "Sprinkle with chia seeds and cinnamon."],
+        matchIngredients: ["bread", "toast", "peanut butter", "peanuts", "banana", "honey", "chia", "cinnamon"]
+      },
+      {
+        id: 'default-25',
+        name: "Tuna Salad Wrap",
+        emoji: "🐟",
+        category: "lunch",
+        tags: ["high-protein", "dairy-free"],
+        time: 10,
+        servings: 2,
+        difficulty: "Easy",
+        description: "Classic tuna salad wrapped in a soft tortilla with fresh veggies.",
+        ingredients: ["2 cans tuna", "2 flour tortillas", "3 tbsp mayo", "1 celery stalk", "Lettuce", "Tomato", "Lemon juice", "Salt and pepper"],
+        instructions: ["Drain tuna and mix with mayo, celery, and lemon juice.", "Season with salt and pepper.", "Lay lettuce on tortilla.", "Add tuna salad and tomato slices.", "Roll up tightly and slice in half."],
+        matchIngredients: ["tuna", "fish", "tortillas", "mayo", "mayonnaise", "celery", "lettuce", "tomato", "lemon"]
+      },
+      {
+        id: 'default-26',
+        name: "Teriyaki Chicken Broccoli Rice Bowl",
+        emoji: "🍚",
+        category: "dinner",
+        tags: ["high-protein", "dairy-free"],
+        time: 35,
+        servings: 4,
+        difficulty: "Easy",
+        description: "Savory teriyaki chicken with tender broccoli served over fluffy jasmine rice.",
+        ingredients: ["2 cups jasmine rice", "1 1/2 lbs boneless skinless chicken breasts, diced", "2 cups broccoli florets", "1 cup teriyaki sauce", "2 tbsp soy sauce", "2 tbsp vegetable oil", "3 cloves garlic, minced", "1 tbsp ginger, grated", "1 tbsp sesame seeds", "1/4 cup green onions, chopped", "Salt and pepper to taste"],
+        instructions: ["Cook jasmine rice according to package directions.", "Season diced chicken with salt and pepper.", "Heat vegetable oil in a large skillet over medium-high heat.", "Add chicken and cook until browned and cooked through, about 6-7 minutes.", "Add garlic and ginger, sauté for 1 minute until fragrant.", "Add broccoli florets and cook for 3-4 minutes until tender-crisp.", "Pour in teriyaki sauce and soy sauce, toss to coat evenly.", "Serve over jasmine rice and garnish with sesame seeds and green onions."],
+        matchIngredients: ["rice", "jasmine rice", "chicken", "broccoli", "teriyaki", "soy sauce", "garlic", "ginger", "sesame", "green onions", "onion"]
+      },
+      {
+        id: 'default-27',
+        name: "Chicken Broccoli Jerk Alfredo Casserole",
+        emoji: "🥘",
+        category: "dinner",
+        tags: ["high-protein"],
+        time: 45,
+        servings: 4,
+        difficulty: "Medium",
+        description: "Creamy Alfredo pasta with a Caribbean jerk twist, loaded with chicken and broccoli.",
+        ingredients: ["8 oz penne pasta", "2 boneless skinless chicken breasts, cubed", "2 cups broccoli florets", "2 tbsp olive oil", "1 cup Alfredo sauce", "2 tbsp jerk sauce", "3 cloves garlic, minced", "1 tsp Italian seasoning", "1 tsp salt", "1/4 tsp black pepper", "1 1/2 cups grated parmesan cheese"],
+        instructions: ["Preheat oven to 375°F (190°C).", "Cook penne pasta according to package directions, adding broccoli in the last 3 minutes. Drain and set aside.", "Heat olive oil in a large oven-safe skillet over medium-high heat.", "Season chicken with salt, pepper, and Italian seasoning. Cook until browned and cooked through, about 6-7 minutes.", "Add garlic and sauté for 1 minute.", "Reduce heat and stir in Alfredo sauce and jerk sauce until combined.", "Add pasta and broccoli to the skillet, toss to coat evenly.", "Top with parmesan cheese and bake for 15-20 minutes until bubbly and golden.", "Garnish with extra parmesan and serve hot."],
+        matchIngredients: ["pasta", "penne", "chicken", "broccoli", "olive oil", "alfredo", "jerk", "garlic", "parmesan", "cheese", "italian seasoning"]
+      },
+      {
+        id: 'default-28',
+        name: "Mediterranean Chicken Bowl",
+        emoji: "🥙",
+        category: "lunch",
+        tags: ["high-protein", "gluten-free"],
+        time: 30,
+        servings: 4,
+        difficulty: "Easy",
+        description: "Fresh and healthy Greek-inspired bowl with seasoned chicken, quinoa, crisp veggies, and creamy tzatziki.",
+        ingredients: ["2 boneless skinless chicken breasts", "1 cup quinoa", "2 cups chicken broth", "1 cucumber, diced", "1 cup cherry tomatoes, halved", "1/2 red onion, thinly sliced", "1/2 cup kalamata olives", "1/2 cup feta cheese, crumbled", "1/2 cup tzatziki sauce", "2 tbsp olive oil", "1 tsp oregano", "1 tsp garlic powder", "Salt and pepper to taste", "Fresh parsley for garnish"],
+        instructions: ["Cook quinoa in chicken broth according to package directions for extra flavor. Fluff and set aside.", "Pound chicken breasts to even thickness for even cooking.", "Season chicken with olive oil, oregano, garlic powder, salt, and pepper.", "Grill or pan-sear chicken over medium-high heat for 6-7 minutes per side until cooked through.", "Let chicken rest for 5 minutes, then slice into strips.", "Assemble bowls: Add quinoa as the base.", "Top with sliced chicken, cucumber, cherry tomatoes, red onion, and olives.", "Crumble feta cheese over the top.", "Drizzle generously with tzatziki sauce.", "Garnish with fresh parsley and serve."],
+        matchIngredients: ["chicken", "quinoa", "rice", "cucumber", "tomatoes", "cherry tomatoes", "red onion", "onion", "olives", "feta", "cheese", "tzatziki", "olive oil", "oregano", "garlic"]
       }
     ];
 
@@ -2195,8 +2676,33 @@
     const loadingOverlay = document.getElementById('loadingOverlay');
 
     // =====================
-    // Passwordless Auth Functions
+    // Auth Functions
     // =====================
+    
+    // Action code settings for magic link
+    const actionCodeSettings = {
+      url: window.location.origin + window.location.pathname,
+      handleCodeInApp: true
+    };
+
+    // Switch between login/register tabs
+    document.querySelectorAll('.auth-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.auth-form').forEach(f => f.classList.remove('active'));
+        tab.classList.add('active');
+        
+        if (tab.dataset.tab === 'login') {
+          document.getElementById('loginForm').classList.add('active');
+        } else {
+          document.getElementById('registerForm').classList.add('active');
+        }
+        
+        document.getElementById('authError').classList.remove('show');
+        document.getElementById('authSuccess').classList.remove('show');
+      });
+    });
+
     function showForm(formId) {
       document.querySelectorAll('.auth-form').forEach(f => f.classList.remove('active'));
       document.getElementById(formId).classList.add('active');
@@ -2228,42 +2734,185 @@
         'auth/user-not-found': 'No account found with this email.',
         'auth/wrong-password': 'Incorrect password.',
         'auth/email-already-in-use': 'An account with this email already exists.',
+        'auth/weak-password': 'Password should be at least 6 characters.',
       };
       return messages[code] || 'An error occurred. Please try again.';
     }
 
-    // Send magic link email
-    document.getElementById('emailForm').addEventListener('submit', async (e) => {
+    // Login with email/password
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
       e.preventDefault();
-      const email = document.getElementById('authEmail').value;
-      const btnText = document.getElementById('emailBtnText');
+      const email = document.getElementById('loginEmail').value;
+      const password = document.getElementById('loginPassword').value;
       
-      btnText.innerHTML = '<div class="spinner"></div> Sending...';
+      if (!password) {
+        showAuthError('Please enter your password or use the magic link option.');
+        return;
+      }
+      
+      const btn = document.getElementById('loginBtn');
+      btn.innerHTML = '<div class="spinner"></div> Signing in...';
+      btn.disabled = true;
+      
+      try {
+        await auth.signInWithEmailAndPassword(email, password);
+      } catch (error) {
+        showAuthError(getAuthErrorMessage(error.code));
+      }
+      
+      btn.innerHTML = '<span>Sign In with Password</span>';
+      btn.disabled = false;
+    });
+
+    // Send magic link from login form
+    document.getElementById('magicLinkBtn').addEventListener('click', async () => {
+      const email = document.getElementById('loginEmail').value;
+      
+      if (!email) {
+        showAuthError('Please enter your email address first.');
+        return;
+      }
+      
+      const btn = document.getElementById('magicLinkBtn');
+      btn.innerHTML = '<div class="spinner"></div> Sending...';
+      btn.disabled = true;
       
       try {
         await auth.sendSignInLinkToEmail(email, actionCodeSettings);
         window.localStorage.setItem('emailForSignIn', email);
         document.getElementById('sentToEmail').textContent = email;
-        showForm('emailSentForm');
+        showForm('magicLinkSentForm');
       } catch (error) {
         showAuthError(getAuthErrorMessage(error.code));
       }
       
-      btnText.innerHTML = '✉️ Send Magic Link';
+      btn.innerHTML = '<span>✉️ Send Magic Link Instead</span>';
+      btn.disabled = false;
     });
 
-    // Use different email button
-    document.getElementById('useDifferentEmailBtn').addEventListener('click', () => {
-      showForm('emailForm');
+    // Register with email/password
+    document.getElementById('registerForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const name = document.getElementById('registerName').value;
+      const email = document.getElementById('registerEmail').value;
+      const password = document.getElementById('registerPassword').value;
+      
+      if (!password) {
+        showAuthError('Please enter a password or use the magic link option.');
+        return;
+      }
+      
+      const btn = document.getElementById('registerBtn');
+      btn.innerHTML = '<div class="spinner"></div> Creating account...';
+      btn.disabled = true;
+      
+      try {
+        const { user } = await auth.createUserWithEmailAndPassword(email, password);
+        await user.updateProfile({ displayName: name });
+        
+        await db.collection('users').doc(user.uid).set({
+          name: name,
+          email: email,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+          favorites: [],
+          mealPlan: {}
+        });
+      } catch (error) {
+        showAuthError(getAuthErrorMessage(error.code));
+        btn.innerHTML = '<span>Create Account</span>';
+        btn.disabled = false;
+      }
     });
 
-    // Complete sign-in for new users
-    document.getElementById('completeSignInForm').addEventListener('submit', async (e) => {
+    // Send magic link from register form
+    document.getElementById('magicLinkRegisterBtn').addEventListener('click', async () => {
+      const email = document.getElementById('registerEmail').value;
+      
+      if (!email) {
+        showAuthError('Please enter your email address first.');
+        return;
+      }
+      
+      const btn = document.getElementById('magicLinkRegisterBtn');
+      btn.innerHTML = '<div class="spinner"></div> Sending...';
+      btn.disabled = true;
+      
+      // Store the name for later
+      const name = document.getElementById('registerName').value;
+      if (name) {
+        window.localStorage.setItem('pendingUserName', name);
+      }
+      
+      try {
+        await auth.sendSignInLinkToEmail(email, actionCodeSettings);
+        window.localStorage.setItem('emailForSignIn', email);
+        document.getElementById('sentToEmail').textContent = email;
+        showForm('magicLinkSentForm');
+      } catch (error) {
+        showAuthError(getAuthErrorMessage(error.code));
+      }
+      
+      btn.innerHTML = '<span>✉️ Sign Up with Magic Link</span>';
+      btn.disabled = false;
+    });
+
+    // Back to login from magic link sent screen
+    document.getElementById('backToLoginBtn').addEventListener('click', () => {
+      showForm('loginForm');
+    });
+
+    // Forgot password
+    document.getElementById('forgotPasswordLink').addEventListener('click', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('loginEmail').value;
+      
+      if (!email) {
+        showAuthError('Please enter your email address first.');
+        return;
+      }
+      
+      try {
+        await auth.sendPasswordResetEmail(email);
+        showAuthSuccess('Password reset email sent! Check your inbox.');
+      } catch (error) {
+        showAuthError(getAuthErrorMessage(error.code));
+      }
+    });
+
+    // Verify email (for cross-device magic link)
+    document.getElementById('verifyEmailBtn').addEventListener('click', async () => {
+      const email = document.getElementById('verifyEmail').value;
+      
+      if (!email) {
+        showAuthError('Please enter your email address.');
+        return;
+      }
+      
+      const btn = document.getElementById('verifyEmailBtn');
+      btn.innerHTML = '<div class="spinner"></div> Verifying...';
+      btn.disabled = true;
+      
+      try {
+        const result = await auth.signInWithEmailLink(email, window.location.href);
+        window.localStorage.removeItem('emailForSignIn');
+        window.history.replaceState({}, document.title, window.location.pathname);
+        
+        if (result.additionalUserInfo?.isNewUser) {
+          showForm('completeProfileForm');
+        }
+      } catch (error) {
+        showAuthError(getAuthErrorMessage(error.code));
+        btn.innerHTML = '<span>Confirm & Sign In</span>';
+        btn.disabled = false;
+      }
+    });
+
+    // Complete profile for new magic link users
+    document.getElementById('completeProfileForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       const name = document.getElementById('newUserName').value;
-      const btnText = document.getElementById('completeBtnText');
       
-      btnText.innerHTML = '<div class="spinner"></div> Setting up...';
+      showLoading();
       
       try {
         const user = auth.currentUser;
@@ -2277,11 +2926,12 @@
           mealPlan: {}
         });
         
+        window.localStorage.removeItem('pendingUserName');
         await user.reload();
-        location.reload(); // Refresh to trigger onAuthStateChanged
+        location.reload();
       } catch (error) {
+        hideLoading();
         showAuthError('Error completing sign-up. Please try again.');
-        btnText.innerHTML = '🚀 Complete Sign Up';
       }
     });
 
@@ -2291,18 +2941,15 @@
         return;
       }
       
-      showLoading();
-      
       let email = window.localStorage.getItem('emailForSignIn');
       
+      // If no email in storage, user clicked link on different device
       if (!email) {
-        email = window.prompt('Please enter your email to confirm sign-in:');
-        if (!email) {
-          hideLoading();
-          showAuthError('Email is required to complete sign-in.');
-          return;
-        }
+        showForm('verifyEmailForm');
+        return;
       }
+      
+      showLoading();
       
       try {
         const result = await auth.signInWithEmailLink(email, window.location.href);
@@ -2311,7 +2958,12 @@
         
         if (result.additionalUserInfo?.isNewUser) {
           hideLoading();
-          showForm('completeSignInForm');
+          // Check if we have a pending name from registration
+          const pendingName = window.localStorage.getItem('pendingUserName');
+          if (pendingName) {
+            document.getElementById('newUserName').value = pendingName;
+          }
+          showForm('completeProfileForm');
           return;
         }
         
@@ -2322,6 +2974,7 @@
       }
     }
 
+    // Logout
     document.getElementById('logoutBtn').addEventListener('click', async () => {
       await auth.signOut();
     });
@@ -2329,9 +2982,12 @@
     // Auth State Observer
     auth.onAuthStateChanged(async (user) => {
       if (user) {
+        // Check if profile is complete
         if (!user.displayName) {
           authScreen.style.display = 'flex';
-          showForm('completeSignInForm');
+          appContainer.classList.remove('active');
+          bottomNav.style.display = 'none';
+          showForm('completeProfileForm');
           return;
         }
         
@@ -2351,7 +3007,7 @@
         authScreen.style.display = 'flex';
         appContainer.classList.remove('active');
         bottomNav.style.display = 'none';
-        showForm('emailForm');
+        showForm('loginForm');
       }
     });
 
@@ -2584,6 +3240,30 @@
     });
 
     // =====================
+    // Meal Type Filter
+    // =====================
+    document.getElementById('mealTypeFilters').addEventListener('click', (e) => {
+      if (e.target.classList.contains('meal-type')) {
+        document.querySelectorAll('#mealTypeFilters .meal-type').forEach(chip => chip.classList.remove('active'));
+        e.target.classList.add('active');
+        state.selectedMealType = e.target.dataset.meal;
+        updateGenerateButtonText();
+      }
+    });
+
+    function updateGenerateButtonText() {
+      const btnText = document.querySelector('#generateBtn .btn-text');
+      const mealLabels = {
+        'any': 'Recipe Ideas',
+        'breakfast': 'Breakfast Ideas',
+        'lunch': 'Lunch Ideas',
+        'dinner': 'Dinner Ideas',
+        'snack': 'Snack Ideas'
+      };
+      btnText.textContent = `✨ Generate ${mealLabels[state.selectedMealType]}`;
+    }
+
+    // =====================
     // Dietary Filters
     // =====================
     document.getElementById('dietaryFilters').addEventListener('click', (e) => {
@@ -2625,8 +3305,10 @@
       try {
         const matchedRecipes = findMatchingRecipes();
         const aiRecipes = await generateAIRecipes();
-        const allRecipes = [...matchedRecipes, ...aiRecipes];
-        renderRecipeCards(suggestedRecipes, allRecipes.slice(0, 6));
+        
+        // Combine: AI recipes first (they use all ingredients), then database matches
+        const allRecipes = [...aiRecipes, ...matchedRecipes];
+        renderRecipeCards(suggestedRecipes, allRecipes.slice(0, 9), true);
         
         if (allRecipes.length === 0) {
           suggestedRecipes.innerHTML = `
@@ -2652,39 +3334,113 @@
     }
 
     function findMatchingRecipes() {
-      return getAllRecipes().filter(recipe => {
-        if (state.dietaryFilters.length > 0 && recipe.tags) {
-          const hasAllFilters = state.dietaryFilters.every(f => recipe.tags.includes(f));
-          if (!hasAllFilters) return false;
+      const allRecipes = getAllRecipes();
+      
+      // Score and filter recipes
+      const scoredRecipes = allRecipes.map(recipe => {
+        // Check meal type filter
+        if (state.selectedMealType !== 'any') {
+          const categoryMap = {
+            'breakfast': 'breakfast',
+            'lunch': 'lunch', 
+            'dinner': 'dinner',
+            'snack': 'snacks'
+          };
+          if (recipe.category !== categoryMap[state.selectedMealType]) {
+            return null;
+          }
         }
 
-        const matchIngredients = recipe.matchIngredients || recipe.ingredients || [];
-        const matchCount = matchIngredients.filter(ing => 
-          state.ingredients.some(userIng => 
-            userIng.includes(ing.toLowerCase()) || ing.toLowerCase().includes(userIng)
-          )
-        ).length;
+        // Check dietary filters
+        if (state.dietaryFilters.length > 0 && recipe.tags) {
+          const hasAllFilters = state.dietaryFilters.every(f => recipe.tags.includes(f));
+          if (!hasAllFilters) return null;
+        }
 
-        return matchCount >= 1;
-      });
+        // Calculate ingredient match score
+        const recipeIngredients = recipe.matchIngredients || recipe.ingredients || [];
+        const recipeIngredientsLower = recipeIngredients.map(ing => 
+          typeof ing === 'string' ? ing.toLowerCase() : ''
+        );
+        
+        // Count how many user ingredients match this recipe
+        let matchedUserIngredients = 0;
+        let matchedRecipeIngredients = 0;
+        
+        state.ingredients.forEach(userIng => {
+          const matches = recipeIngredientsLower.some(recipeIng => 
+            recipeIng.includes(userIng) || userIng.includes(recipeIng)
+          );
+          if (matches) matchedUserIngredients++;
+        });
+
+        recipeIngredientsLower.forEach(recipeIng => {
+          const matches = state.ingredients.some(userIng => 
+            recipeIng.includes(userIng) || userIng.includes(recipeIng)
+          );
+          if (matches) matchedRecipeIngredients++;
+        });
+
+        // Skip if no ingredients match
+        if (matchedUserIngredients === 0) return null;
+
+        // Calculate scores
+        const userIngredientCoverage = matchedUserIngredients / state.ingredients.length; // What % of user's ingredients are used
+        const recipeIngredientCoverage = matchedRecipeIngredients / recipeIngredientsLower.length; // What % of recipe ingredients user has
+        
+        // Combined score prioritizing recipes that use MORE of user's ingredients
+        // and recipes where user has MORE of the required ingredients
+        const score = (userIngredientCoverage * 0.6) + (recipeIngredientCoverage * 0.4);
+
+        return {
+          recipe,
+          score,
+          matchedUserIngredients,
+          matchedRecipeIngredients,
+          totalRecipeIngredients: recipeIngredientsLower.length,
+          userIngredientCoverage,
+          recipeIngredientCoverage
+        };
+      }).filter(Boolean);
+
+      // Sort by score (highest first)
+      scoredRecipes.sort((a, b) => b.score - a.score);
+
+      // Return recipes with match info for display
+      return scoredRecipes.map(item => ({
+        ...item.recipe,
+        _matchScore: item.score,
+        _matchedIngredients: item.matchedUserIngredients,
+        _totalUserIngredients: state.ingredients.length,
+        _hasAllIngredients: item.recipeIngredientCoverage >= 0.8 // 80%+ of recipe ingredients available
+      }));
     }
 
     async function generateAIRecipes() {
       try {
-        const prompt = `Generate 2 unique recipe suggestions based on these ingredients: ${state.ingredients.join(', ')}.
+        const mealTypeText = state.selectedMealType !== 'any' 
+          ? `These should specifically be ${state.selectedMealType} recipes.`
+          : '';
+        
+        const prompt = `Generate 3 unique recipe suggestions that USE ALL of these ingredients: ${state.ingredients.join(', ')}.
+        
+        IMPORTANT: Each recipe MUST incorporate ALL the listed ingredients as key components. Do not suggest recipes that only use some of the ingredients.
+        
+        ${mealTypeText}
         ${state.dietaryFilters.length > 0 ? `Dietary requirements: ${state.dietaryFilters.join(', ')}.` : ''}
         
         For each recipe, provide:
         - name: Creative recipe name
         - emoji: Single emoji that represents the dish
-        - category: one of breakfast, lunch, dinner, snacks, desserts
+        - category: one of breakfast, lunch, dinner, snacks, desserts ${state.selectedMealType !== 'any' ? `(must be ${state.selectedMealType === 'snack' ? 'snacks' : state.selectedMealType})` : ''}
         - tags: array of applicable dietary tags from [vegetarian, vegan, gluten-free, dairy-free, keto, low-carb, high-protein]
         - time: cooking time in minutes (number)
         - servings: number of servings (number)
         - difficulty: Easy, Medium, or Hard
-        - description: One sentence description
-        - ingredients: array of ingredient strings with amounts
+        - description: One sentence description mentioning the key ingredients
+        - ingredients: array of ingredient strings with amounts (MUST include all user ingredients: ${state.ingredients.join(', ')})
         - instructions: array of step-by-step instruction strings
+        - matchIngredients: array of the main ingredients used (should match user's ingredients)
         
         Respond ONLY with valid JSON array, no markdown, no explanation.`;
 
@@ -2693,7 +3449,7 @@
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             model: 'claude-sonnet-4-20250514',
-            max_tokens: 1000,
+            max_tokens: 1500,
             messages: [{ role: 'user', content: prompt }]
           })
         });
@@ -2707,7 +3463,9 @@
           ...r,
           id: `ai-${Date.now()}-${i}`,
           aiGenerated: true,
-          matchIngredients: state.ingredients
+          _hasAllIngredients: true,
+          _matchedIngredients: state.ingredients.length,
+          _totalUserIngredients: state.ingredients.length
         }));
       } catch (error) {
         console.error('AI generation failed:', error);
@@ -2718,8 +3476,19 @@
     // =====================
     // Recipe Cards
     // =====================
-    function renderRecipeCards(container, recipes) {
-      container.innerHTML = recipes.map(recipe => `
+    function renderRecipeCards(container, recipes, showMatchInfo = false) {
+      container.innerHTML = recipes.map(recipe => {
+        // Build match badge if available
+        let matchBadge = '';
+        if (showMatchInfo && recipe._matchedIngredients !== undefined) {
+          if (recipe._hasAllIngredients) {
+            matchBadge = `<span class="recipe-tag match-perfect">✓ Ready to make</span>`;
+          } else {
+            matchBadge = `<span class="recipe-tag match-partial">${recipe._matchedIngredients}/${recipe._totalUserIngredients} ingredients</span>`;
+          }
+        }
+
+        return `
         <div class="recipe-card" onclick="openRecipeModal('${recipe.id}')">
           <div class="recipe-image">
             ${recipe.emoji}
@@ -2730,7 +3499,8 @@
           </div>
           <div class="recipe-content">
             <div class="recipe-tags">
-              ${(recipe.tags || []).slice(0, 3).map(tag => `<span class="recipe-tag">${tag}</span>`).join('')}
+              ${matchBadge}
+              ${(recipe.tags || []).slice(0, 2).map(tag => `<span class="recipe-tag">${tag}</span>`).join('')}
               ${recipe.aiGenerated ? '<span class="recipe-tag" style="background: rgba(102, 126, 234, 0.15); color: #667eea;">✨ AI</span>' : ''}
               ${recipe.userId ? '<span class="recipe-tag" style="background: rgba(46, 204, 113, 0.15); color: #2ecc71;">👤 Mine</span>' : ''}
             </div>
@@ -2743,7 +3513,7 @@
             </div>
           </div>
         </div>
-      `).join('');
+      `}).join('');
     }
 
     // =====================
